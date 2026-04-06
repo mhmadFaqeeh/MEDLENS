@@ -8,3 +8,4 @@ numpy>=1.24.0
 sentencepiece>=0.1.99
 albumentations[imgaug]>=1.3.0
 huggingface-hub>=0.16.0
+gunicorn
