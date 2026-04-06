@@ -6,4 +6,4 @@ transformers
 easyocr
 opencv-python-headless
 numpy
-Pillowww
+Pillow
