@@ -11,3 +11,7 @@ huggingface-hub>=0.16.0
 gunicorn
 
 flask
+
+easyocr
+flask
+opencv-python-headless
