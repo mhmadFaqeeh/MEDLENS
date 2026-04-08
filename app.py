@@ -1,70 +1,67 @@
-from flask import Flask, render_template, request, jsonify
-import sqlite3
-import base64
 import cv2
 import numpy as np
+from flask import Flask, request, jsonify, render_template
+import base64
+import mysql.connector
 import easyocr
-import os
 
 app = Flask(__name__)
 
-# تجهيز قارئ النصوص (OCR) - سيتم تحميل الموديل في أول مرة تشغيل فقط
-# نستخدم 'en' لأن أسماء الأدوية غالباً بالإنجليزية
-reader = easyocr.Reader(['en']) 
+# تشغيل محرك القراءة (بياخذ وقت أول مرة بس)
+reader = easyocr.Reader(['en'])
 
 def get_db_connection():
-    # تأكد أن قاعدة البيانات medlens.db موجودة في نفس مجلد app.py
-    db_path = os.path.join(os.path.dirname(__file__), 'medlens.db')
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
-    return conn
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="medlens"
+    )
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/process_image', methods=['POST'])
-def process_image():
+@app.route('/upload', methods=['POST'])
+def upload():
     try:
-        data = request.json
+        data = request.get_json()
         image_data = data['image'].split(",")[1]
-        
-        # تحويل كود الصورة (Base64) إلى مصفوفة يفهمها OpenCV
-        nparr = np.frombuffer(base64.b64decode(image_data), np.uint8)
+        image_bytes = base64.b64decode(image_data)
+
+        # تحويل الصورة لـ OpenCV
+        nparr = np.frombuffer(image_bytes, np.uint8)
         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-        # قراءة النص من الصورة
-        result = reader.readtext(img)
-        detected_text = " ".join([res[1] for res in result]).lower()
-        print(f"--- النص المكتشف من الكاميرا: {detected_text} ---")
+        # --- المعالجة اللي طلبتها (أبيض وأسود وتغميق) ---
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        processed = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
 
-        # البحث في قاعدة البيانات
+        # القراءة باستخدام EasyOCR
+        results = reader.readtext(processed)
+        detected_text = " ".join([res[1] for res in results]).upper()
+        print(f"Detected: {detected_text}") # بطلعلك في الـ Terminal شو قرأ
+
+        # البحث في القاعدة
         conn = get_db_connection()
-        medicine = None
-        all_meds = conn.execute('SELECT * FROM medicines').fetchall()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM drugs")
+        all_drugs = cursor.fetchall()
         
-        # مطابقة النص المكتشف مع أسماء الأدوية في الداتا بيز
-        for med in all_meds:
-            if med['name'].lower() in detected_text:
-                medicine = med
+        found_drug = None
+        for drug in all_drugs:
+            if drug['name'].upper() in detected_text:
+                found_drug = drug
                 break
         conn.close()
 
-        if medicine:
-            return jsonify({
-                "success": True,
-                "name": medicine['name'],
-                "description": medicine['description'],
-                "usage": medicine['usage_instructions'],
-                "warnings": medicine['warnings']
-            })
-        else:
-            return jsonify({"success": False, "message": "لم يتم التعرف على الدواء في قاعدة البيانات"})
+        if found_drug:
+            return jsonify({"success": True, "name": found_drug['name'], "usage": found_drug['usage_info']})
+        return jsonify({"success": False, "message": "لم يتم التعرف على الدواء"})
 
     except Exception as e:
-        print(f"خطأ أثناء المعالجة: {e}")
+        print(f"Error: {e}")
         return jsonify({"success": False, "message": str(e)})
-if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
