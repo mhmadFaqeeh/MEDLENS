@@ -3,73 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedLens - فحص الدواء الذكي</title>
+    <title>MedLens 💊</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; text-align: center; padding: 20px; margin: 0; }
-        .container { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: auto; }
-        h1 { color: #28a745; font-size: 24px; }
-        #video { width: 100%; border-radius: 15px; border: 3px solid #28a745; margin-bottom: 10px; transform: scaleX(-1); }
-        .btn-capture { background: #28a745; color: white; border: none; padding: 15px 30px; border-radius: 50px; font-size: 18px; cursor: pointer; width: 100%; transition: 0.3s; }
-        .btn-capture:active { transform: scale(0.95); background: #218838; }
-        .result-card { background: #e9f7ef; margin-top: 20px; padding: 15px; border-radius: 15px; text-align: right; border-right: 5px solid #28a745; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        #loading { color: #666; margin-top: 10px; font-style: italic; }
+        body { font-family: sans-serif; text-align: center; background-color: #f8f9fa; margin: 0; }
+        .container { padding: 20px; }
+        #video {
+            width: 100%; max-width: 500px;
+            border-radius: 15px; border: 3px solid #007bff;
+            transform: none !important; /* لضمان عدم قلب الصورة */
+            object-fit: cover;
+        }
+        .btn {
+            background-color: #007bff; color: white; padding: 15px 30px;
+            border: none; border-radius: 30px; font-size: 18px; margin-top: 20px;
+        }
+        #result { margin-top: 20px; padding: 15px; background: white; border-radius: 10px; }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>MedLens - عدسة الدواء</h1>
-        <p>وجّه الكاميرا نحو اسم الدواء بوضوح</p>
-        
+        <h2 style="color:#007bff;">💊 MedLens</h2>
         <video id="video" autoplay playsinline></video>
-        <button class="btn-capture" id="snap">📸 افحص الدواء الآن</button>
-        
-        <div id="loading" style="display:none;">⏳ جاري تحليل الصورة...</div>
-        <div id="result-area"></div>
-        
-        <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+        <button id="capture" class="btn">إفحص الدواء الآن</button>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <div id="result">المعلومات ستظهر هنا</div>
     </div>
 
     <script>
         const video = document.getElementById('video');
-        const snap = document.getElementById('snap');
-        const resultArea = document.getElementById('result-area');
-        const loading = document.getElementById('loading');
+        const canvas = document.getElementById('canvas');
+        const resultDiv = document.getElementById('result');
 
-        // طلب الكاميرا الخلفية (للموبايلات)
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
             .then(stream => { video.srcObject = stream; })
-            .catch(err => { alert("لا يمكن فتح الكاميرا: " + err); });
+            .catch(err => { resultDiv.innerHTML = "يرجى تفعيل الكاميرا."; });
 
-        snap.addEventListener('click', () => {
-            const canvas = document.getElementById('canvas');
+        document.getElementById('capture').addEventListener('click', () => {
             const context = canvas.getContext('2d');
-            context.drawImage(video, 0, 0, 640, 480);
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
             const imageData = canvas.toDataURL('image/png');
+            resultDiv.innerHTML = "جاري التحليل... ⏳";
 
-            loading.style.display = 'block';
-            resultArea.innerHTML = '';
-
-            fetch('/process_image', {
+            fetch('/upload', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ image: imageData })
             })
             .then(res => res.json())
             .then(data => {
-                loading.style.display = 'none';
-                if(data.success) {
-                    resultArea.innerHTML = `
-                        <div class="result-card">
-                            <h2 style="color:#28a745; margin-top:0;">${data.name}</h2>
-                            <p><b>وصف الدواء:</b> ${data.description}</p>
-                            <p><b>طريقة الاستخدام:</b> ${data.usage}</p>
-                            <p style="color:#d9534f;"><b>⚠️ تحذيرات:</b> ${data.warnings}</p>
-                        </div>`;
+                if (data.success) {
+                    resultDiv.innerHTML = `<h3>${data.name}</h3><p>${data.usage}</p>`;
                 } else {
-                    resultArea.innerHTML = `<p style="color:red;">عذراً، لم أستطع تمييز الدواء. حاول تقريب الكاميرا أكثر.</p>`;
+                    resultDiv.innerHTML = `<p style="color:red;">${data.message}</p>`;
                 }
+            })
+            .catch(err => {
+                resultDiv.innerHTML = "خطأ: تأكد أن ngrok والسيرفر يعملان.";
             });
         });
     </script>
