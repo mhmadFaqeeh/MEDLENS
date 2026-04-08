@@ -1,9 +1,11 @@
 flask
+flask-cors
 gunicorn
 opencv-python-headless
 numpy
 mysql-connector-python
---index-url https://download.pytorch.org/whl/cpu
+# هاد السطر لازم يكون تحت المكتبات العادية وفوق torch مباشرة
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch
 torchvision
 easyocr
