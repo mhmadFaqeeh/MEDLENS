@@ -28,7 +28,11 @@ def get_db_connection():
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         return None
+from flask import render_template
 
+@app.route('/')
+def home():
+    return render_template('index.html')
 # 3. المسار الرئيسي لفحص صورة الدواء (OCR + Database)
 @app.route('/scan', methods=['POST'])
 def scan_drug():
