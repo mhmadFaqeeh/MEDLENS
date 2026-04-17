@@ -79,6 +79,8 @@ if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
     @app.route('/test')
+# السطر 81 مثلاً
+@app.route('/test')
+# السطر 82 - تأكد أنه لا يوجد فراغ قبل كلمة def
 def test():
-    return "السيرفر شغال تمام يا محمد!"
-    
+    return "السيرفر شغال تمام يا محمد!" # هنا يجب أن يكون هناك 4 مسافات (Tab)
