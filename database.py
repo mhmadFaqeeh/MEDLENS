@@ -1,10 +1,12 @@
 import mysql.connector
+import os
 
 def get_db_connection():
     conn = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='',  # XAMPP افتراضياً بدون باسورد
-        database='medlens'
+        host=os.getenv('MYSQLHOST'),
+        user=os.getenv('MYSQLUSER'),
+        password=os.getenv('MYSQLPASSWORD'),
+        database=os.getenv('MYSQLDATABASE'),
+        port=os.getenv('MYSQLPORT')
     )
     return conn
