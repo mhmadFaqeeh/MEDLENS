@@ -3,35 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MedLens Pro</title>
+    <title>MedLens Pro | نظام الفحص الذكي</title>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+
     <div class="background-layer"></div>
     <div class="grid-layer"></div>
 
     <section id="auth-section" class="container">
-        <div style="background: linear-gradient(135deg, #2dd4bf, #67e8f9); width: 70px; height: 70px; border-radius: 20px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: #020617; font-weight: 900; font-size: 28px;">ML</div>
-        <h1>MedLens</h1>
-        <p style="opacity: 0.7; font-size: 14px;">Smart Recognition System</p>
+        <div class="glass-icon">
+            <div class="logo-text">ML</div>
+        </div>
+        <h1 class="main-title">MedLens</h1>
+        <p class="subtitle">نظام التعرف الذكي على الأدوية</p>
 
-        <form id="login-form">
-            <input type="text" id="username" placeholder="اسم المستخدم" required>
-            <input type="password" id="password" placeholder="كلمة المرور" required>
-            <button type="submit" class="primary-btn">دخول</button>
+        <form id="login-form" class="glass-form">
+            <div class="input-wrapper">
+                <input type="text" id="username" placeholder="اسم المستخدم" required>
+            </div>
+            <div class="input-wrapper">
+                <input type="password" id="password" placeholder="كلمة المرور" required>
+            </div>
+            <button type="submit" class="primary-btn">تسجيل الدخول</button>
         </form>
+        
+        <div class="auth-footer">
+            <p>ليس لديك حساب؟ <a href="#" id="go-to-register">إنشاء حساب جديد</a></p>
+        </div>
     </section>
 
     <section id="user-dashboard" class="container hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h3>لوحة الفحص</h3>
-            <select id="lang-select" style="width: auto; margin: 0; padding: 5px 10px;">
-                <option value="ar">AR</option>
-                <option value="en">EN</option>
+        <header class="dash-header">
+            <div class="user-info">
+                <span class="status-dot"></span>
+                <h3>لوحة الفحص</h3>
+            </div>
+            <select id="lang-toggle" class="glass-select">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
             </select>
+        </header>
+
+        <div class="camera-container">
+            <video id="video" autoplay playsinline></video>
+            <div class="scan-overlay"></div>
         </div>
-        <video id="video" autoplay playsinline></video>
-        <button id="scan-btn" class="primary-btn">بدأ الفحص الذكي</button>
+
+        <button id="scan-btn" class="primary-btn scan-effect">ابدأ الفحص الذكي</button>
+
+        <div id="result-card" class="result-glass-card hidden">
+            <div class="result-header">
+                <span id="med-name-display">جاري التحليل...</span>
+            </div>
+            <p id="med-info-display">سيتم عرض تفاصيل الدواء والجرعات هنا بعد اكتمال المسح.</p>
+        </div>
+    </section>
+
+    <section id="admin-dashboard" class="container hidden">
+        <div class="dash-header">
+            <h2>إدارة البيانات</h2>
+            <button class="small-btn" id="back-to-user">رجوع</button>
+        </div>
+        
+        <div class="admin-tools">
+            <button class="glass-btn-secondary">إضافة دواء جديد +</button>
+        </div>
+
+        <div class="table-scroll">
+            <table class="glass-table">
+                <thead>
+                    <tr>
+                        <th>الدواء</th>
+                        <th>الحالة</th>
+                        <th>تعديل</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-meds-list">
+                    </tbody>
+            </table>
+        </div>
     </section>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
