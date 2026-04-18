@@ -1,10 +1,5 @@
 flask
-flask-cors
-gunicorn
-opencv-python-headless
-numpy
 mysql-connector-python
---extra-index-url https://download.pytorch.org/whl/cpu
-torch
-torchvision
-easyocr
+opencv-python-headless
+fuzzywuzzy
+python-Levenshtein
