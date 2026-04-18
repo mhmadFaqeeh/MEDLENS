@@ -1,24 +1,30 @@
 import os
 import cv2
 import numpy as np
-import easyocr
+import pytesseract
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__, static_folder='static')
 
-# تهيئة القارئ مرة واحدة لتوفير الوقت
-reader = easyocr.Reader(['ar', 'en'], gpu=False)
-
-def enhance_for_ocr(img_path):
-    # قراءة الصورة
+# دالة معالجة الصورة الذكية
+def get_text_from_image(img_path):
+    # 1. قراءة الصورة
     img = cv2.imread(img_path)
-    # 1. تحويل لرمادي
+    if img is None: return ""
+    
+    # 2. تحويل لرمادي (Grayscale) لزيادة سرعة القراءة
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # 2. زيادة التباين والحدة (Adaptive Thresholding)
-    enhanced = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-    path = "processed.png"
-    cv2.imwrite(path, enhanced)
-    return path
+    
+    # 3. زيادة التباين والحدة (Adaptive Thresholding) لتمزيق التشويش
+    processed_img = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+    
+    # حفظ النسخة المعالجة (للفحص)
+    cv2.imwrite("static/processed_debug.png", processed_img)
+    
+    # 4. قراءة النص (عربي + إنجليزي)
+    custom_config = r'--oem 3 --psm 6'
+    text = pytesseract.image_to_string(processed_img, lang='eng+ara', config=custom_config)
+    return text.strip()
 
 @app.route('/')
 def index():
@@ -27,22 +33,20 @@ def index():
 @app.route('/scan', methods=['POST'])
 def scan():
     if 'image' not in request.files:
-        return jsonify({"error": "No image"}), 400
+        return jsonify({"error": "No image uploaded"}), 400
     
     file = request.files['image']
-    file.save("temp.png")
+    img_path = "temp_capture.png"
+    file.save(img_path)
     
-    # المعالجة
-    processed_path = enhance_for_ocr("temp.png")
-    
-    # القراءة (سرعة عالية وماتشينج)
-    results = reader.readtext(processed_path, detail=0)
-    full_text = " ".join(results)
+    # معالجة وقراءة
+    extracted_text = get_text_from_image(img_path)
     
     return jsonify({
-        "name": full_text if full_text else "تعذر القراءة",
+        "name": extracted_text if extracted_text else "تعذر قراءة الاسم",
         "status": "success"
     })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
