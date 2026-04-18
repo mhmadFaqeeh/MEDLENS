@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedLens</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MedLens Pro</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -11,21 +11,27 @@
     <div class="grid-layer"></div>
 
     <section id="auth-section" class="container">
-        <div class="logo-mark">ML</div>
-        <h2 style="margin-bottom: 5px;">MedLens</h2>
-        <p style="opacity: 0.7; font-size: 14px; margin-bottom: 20px;">Smart Medicine Recognition</p>
+        <div style="background: linear-gradient(135deg, #2dd4bf, #67e8f9); width: 70px; height: 70px; border-radius: 20px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: #020617; font-weight: 900; font-size: 28px;">ML</div>
+        <h1>MedLens</h1>
+        <p style="opacity: 0.7; font-size: 14px;">Smart Recognition System</p>
 
         <form id="login-form">
             <input type="text" id="username" placeholder="اسم المستخدم" required>
             <input type="password" id="password" placeholder="كلمة المرور" required>
-            <button type="submit" class="primary-btn">دخول للنظام</button>
+            <button type="submit" class="primary-btn">دخول</button>
         </form>
     </section>
 
     <section id="user-dashboard" class="container hidden">
-        <h2>لوحة الفحص</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3>لوحة الفحص</h3>
+            <select id="lang-select" style="width: auto; margin: 0; padding: 5px 10px;">
+                <option value="ar">AR</option>
+                <option value="en">EN</option>
+            </select>
+        </div>
         <video id="video" autoplay playsinline></video>
-        <button id="scan-btn" class="primary-btn">ابدأ الفحص</button>
+        <button id="scan-btn" class="primary-btn">بدأ الفحص الذكي</button>
     </section>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
