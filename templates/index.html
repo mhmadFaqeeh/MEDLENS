@@ -3,69 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedLens - نظام فحص الأدوية</title>
+    <title>MedLens</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
     <div class="background-layer"></div>
     <div class="grid-layer"></div>
 
     <section id="auth-section" class="container">
-        <div class="hero-shell" style="text-align: center; margin-bottom: 20px;">
-            <div class="logo-mark">ML</div>
-            <p class="eyebrow">Smart Medicine Recognition</p>
-            <h1 style="font-size: 22px; margin-top: 10px;">واجهة ذكية لفحص الأدوية</h1>
-        </div>
+        <div class="logo-mark">ML</div>
+        <h2 style="margin-bottom: 5px;">MedLens</h2>
+        <p style="opacity: 0.7; font-size: 14px; margin-bottom: 20px;">Smart Medicine Recognition</p>
 
-        <div class="auth-card">
-            <div id="login-panel" class="auth-panel">
-                <form id="login-form">
-                    <div class="input-group">
-                        <label>اسم المستخدم</label>
-                        <input type="text" id="username" placeholder="أدخل اسم المستخدم" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label>كلمة المرور</label>
-                        <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
-                    </div>
-
-                    <button type="submit" class="primary-btn">دخول للنظام</button>
-                </form>
-
-                <p style="text-align: center; margin-top: 15px; font-size: 14px; opacity: 0.8;">
-                    ليس لديك حساب؟ <a href="#" id="show-register-link" style="color: #2dd4bf; text-decoration: none;">إنشاء حساب جديد</a>
-                </p>
-            </div>
-
-            <div id="register-panel" class="auth-panel hidden">
-                <h2 style="text-align: center; margin-bottom: 15px;">إنشاء حساب جديد</h2>
-                <form id="register-form">
-                    <input type="text" id="reg-user" placeholder="اسم المستخدم الجديد" required>
-                    <input type="password" id="reg-pass" placeholder="كلمة المرور" required>
-                    <input type="password" id="reg-confirm" placeholder="تأكيد كلمة المرور" required>
-                    <button type="submit" class="primary-btn">إنشاء الحساب</button>
-                </form>
-                <p style="text-align: center; margin-top: 15px;">
-                    <a href="#" id="show-login-link" style="color: #2dd4bf; text-decoration: none;">العودة لتسجيل الدخول</a>
-                </p>
-            </div>
-        </div>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="اسم المستخدم" required>
+            <input type="password" id="password" placeholder="كلمة المرور" required>
+            <button type="submit" class="primary-btn">دخول للنظام</button>
+        </form>
     </section>
 
     <section id="user-dashboard" class="container hidden">
-        <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 style="font-size: 20px;">لوحة الفحص</h2>
-            <select id="language-select" style="width: auto; margin: 0; padding: 5px 10px;">
-                <option value="ar">العربية</option>
-                <option value="en">English</option>
-            </select>
-        </div>
+        <h2>لوحة الفحص</h2>
+        <video id="video" autoplay playsinline></video>
+        <button id="scan-btn" class="primary-btn">ابدأ الفحص</button>
+    </section>
 
-        <div class="camera-section">
-            <video id="video" autoplay playsinline></video>
-            <button id="scan-btn" class="primary-btn">ابدأ فحص الدواء</button>
-        </div>
-
-        <div id="result-card" class="card hidden" style="margin-top: 20px; padding: 15px; background:
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
