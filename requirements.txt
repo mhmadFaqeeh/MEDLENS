@@ -1,6 +1,7 @@
-flask
-mysql-connector-python
-opencv-python-headless
-fuzzywuzzy
-python-Levenshtein
+Flask
 gunicorn
+mysql-connector-python
+pytesseract
+opencv-python-headless
+numpy
+gTTS
