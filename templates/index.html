@@ -2,329 +2,70 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-
-    <!-- مهم لعرض الصفحة بشكل صحيح على الموبايل -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>MedLens - نظام فحص الأدوية</title>
-
-    <!-- ربط ملف التصميم -->
-   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <!-- طبقات خلفية ديكورية -->
     <div class="background-layer"></div>
     <div class="grid-layer"></div>
 
-    <!-- أشكال طافية تعبر عن فكرة الأدوية -->
-    <div class="floating-pills pill-one"></div>
-    <div class="floating-pills pill-two"></div>
-    <div class="floating-capsule capsule-one"></div>
-    <div class="floating-capsule capsule-two"></div>
-
-    <!-- =========================
-         قسم تسجيل الدخول / إنشاء الحساب
-    ========================== -->
     <section id="auth-section" class="container">
-        <div class="hero-shell">
-            <div class="hero-badge">
-                <span class="cross-icon">✚</span>
-                <span>MedLens</span>
-            </div>
-
-            <div class="logo-wrap">
-                <div class="logo-mark">ML</div>
-                <div class="logo-ring"></div>
-                <div class="logo-ring ring-two"></div>
-            </div>
-
-            <!-- نص علوي يتغير حسب اللغة -->
-            <p class="eyebrow" data-i18n="heroEyebrow">Smart Medicine Recognition</p>
-            <h1 data-i18n="heroTitle">واجهة ذكية لفحص الأدوية والتعرف عليها بصريًا</h1>
+        <div class="hero-shell" style="text-align: center; margin-bottom: 20px;">
+            <div class="logo-mark">ML</div>
+            <p class="eyebrow">Smart Medicine Recognition</p>
+            <h1 style="font-size: 22px; margin-top: 10px;">واجهة ذكية لفحص الأدوية</h1>
         </div>
 
-        <!-- كرت تسجيل الدخول / إنشاء الحساب -->
-        <div class="auth-card glass-card">
-            <div class="auth-tabs">
-                <button type="button" class="auth-tab active" data-target="login-panel" data-i18n="loginTab">تسجيل الدخول</button>
-                <button type="button" class="auth-tab" data-target="register-panel" data-i18n="registerTab">إنشاء حساب</button>
-            </div>
-
-            <!-- لوحة تسجيل الدخول -->
+        <div class="auth-card">
             <div id="login-panel" class="auth-panel">
-                <h2 data-i18n="loginWelcome">مرحبًا بك في MedLens</h2>
-                <p class="panel-subtitle" data-i18n="loginSubtitle">ادخل إلى النظام للبدء بفحص الأدوية وإدارة النتائج</p>
-
                 <form id="login-form">
                     <div class="input-group">
-                        <label for="username" data-i18n="usernameLabel">اسم المستخدم</label>
-                        <input
-                            type="text"
-                            id="username"
-                            data-i18n-placeholder="usernamePlaceholder"
-                            placeholder="أدخل اسم المستخدم"
-                            required
-                        >
+                        <label>اسم المستخدم</label>
+                        <input type="text" id="username" placeholder="أدخل اسم المستخدم" required>
                     </div>
 
                     <div class="input-group">
-                        <label for="password" data-i18n="passwordLabel">كلمة المرور</label>
-
-                        <div class="password-field">
-                            <input
-                                type="password"
-                                id="password"
-                                data-i18n-placeholder="passwordPlaceholder"
-                                placeholder="أدخل كلمة المرور"
-                                required
-                            >
-                            <button
-                                type="button"
-                                class="toggle-password-btn"
-                                data-target-input="password"
-                            >
-                                إظهار
-                            </button>
-                        </div>
+                        <label>كلمة المرور</label>
+                        <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
                     </div>
 
-                    <button type="submit" class="primary-btn" data-i18n="loginBtn">دخول</button>
+                    <button type="submit" class="primary-btn">دخول للنظام</button>
                 </form>
 
-                <p class="auth-switch-text">
-                    <span data-i18n="noAccountText">ليس لديك حساب؟</span>
-                    <a href="#" id="show-register-link" data-i18n="createNewAccountLink">إنشاء حساب جديد</a>
+                <p style="text-align: center; margin-top: 15px; font-size: 14px; opacity: 0.8;">
+                    ليس لديك حساب؟ <a href="#" id="show-register-link" style="color: #2dd4bf; text-decoration: none;">إنشاء حساب جديد</a>
                 </p>
             </div>
 
-            <!-- لوحة إنشاء الحساب -->
             <div id="register-panel" class="auth-panel hidden">
-                <h2 data-i18n="registerTitle">إنشاء حساب جديد</h2>
-                <p class="panel-subtitle" data-i18n="registerSubtitle">أنشئ حسابًا جديدًا للوصول إلى لوحة المستخدم</p>
-
+                <h2 style="text-align: center; margin-bottom: 15px;">إنشاء حساب جديد</h2>
                 <form id="register-form">
-                    <div class="input-group">
-                        <label for="register-username" data-i18n="newUsernameLabel">اسم المستخدم الجديد</label>
-                        <input
-                            type="text"
-                            id="register-username"
-                            data-i18n-placeholder="newUsernamePlaceholder"
-                            placeholder="اسم المستخدم الجديد"
-                            required
-                        >
-                    </div>
-
-                    <div class="input-group">
-                        <label for="register-password" data-i18n="newPasswordLabel">كلمة المرور</label>
-
-                        <div class="password-field">
-                            <input
-                                type="password"
-                                id="register-password"
-                                data-i18n-placeholder="newPasswordPlaceholder"
-                                placeholder="كلمة المرور"
-                                required
-                            >
-                            <button
-                                type="button"
-                                class="toggle-password-btn"
-                                data-target-input="register-password"
-                            >
-                                إظهار
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="register-confirm-password" data-i18n="confirmPasswordLabel">تأكيد كلمة المرور</label>
-
-                        <div class="password-field">
-                            <input
-                                type="password"
-                                id="register-confirm-password"
-                                data-i18n-placeholder="confirmPasswordPlaceholder"
-                                placeholder="تأكيد كلمة المرور"
-                                required
-                            >
-                            <button
-                                type="button"
-                                class="toggle-password-btn"
-                                data-target-input="register-confirm-password"
-                            >
-                                إظهار
-                            </button>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="primary-btn" data-i18n="registerBtn">إنشاء الحساب</button>
+                    <input type="text" id="reg-user" placeholder="اسم المستخدم الجديد" required>
+                    <input type="password" id="reg-pass" placeholder="كلمة المرور" required>
+                    <input type="password" id="reg-confirm" placeholder="تأكيد كلمة المرور" required>
+                    <button type="submit" class="primary-btn">إنشاء الحساب</button>
                 </form>
-
-                <p class="auth-switch-text">
-                    <span data-i18n="haveAccountText">لديك حساب بالفعل؟</span>
-                    <a href="#" id="show-login-link" data-i18n="backToLoginLink">العودة لتسجيل الدخول</a>
+                <p style="text-align: center; margin-top: 15px;">
+                    <a href="#" id="show-login-link" style="color: #2dd4bf; text-decoration: none;">العودة لتسجيل الدخول</a>
                 </p>
             </div>
-
-            <!-- منطقة رسائل النجاح والخطأ -->
-            <p id="auth-message" class="auth-message hidden"></p>
-        </div>
-
-        <!-- بطاقات المميزات صارت تحت كرت تسجيل الدخول -->
-        <div class="feature-mini-cards">
-            <div class="mini-card">
-                <span class="mini-icon">💊</span>
-                <div>
-                    <strong data-i18n="featureScanTitle">فحص الدواء</strong>
-                    <p data-i18n="featureScanText">التقاط وتحليل سريع</p>
-                </div>
-            </div>
-
-            <div class="mini-card">
-                <span class="mini-icon">🧾</span>
-                <div>
-                    <strong data-i18n="featureResultTitle">نتائج واضحة</strong>
-                    <p data-i18n="featureResultText">اسم ووصف مباشر</p>
-                </div>
-            </div>
-
-            <div class="mini-card">
-                <span class="mini-icon">🔊</span>
-                <div>
-                    <strong data-i18n="featureVoiceTitle">دعم صوتي</strong>
-                    <p data-i18n="featureVoiceText">قراءة حسب اللغة</p>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- =========================
-         لوحة المستخدم
-    ========================== -->
     <section id="user-dashboard" class="container hidden">
-        <div class="dashboard-header">
-            <div>
-                <p class="eyebrow" data-i18n="userPanelEyebrow">MedLens User Panel</p>
-                <h2 data-i18n="userDashboardTitle">لوحة المستخدم</h2>
-            </div>
-            <div class="status-chip" data-i18n="readyToScan">جاهز لفحص الدواء</div>
+        <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="font-size: 20px;">لوحة الفحص</h2>
+            <select id="language-select" style="width: auto; margin: 0; padding: 5px 10px;">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+            </select>
         </div>
 
-        <div class="dashboard-banner glass-card">
-            <div class="banner-icon">💊</div>
-            <div>
-                <h3 data-i18n="smartScanTitle">فحص ذكي للدواء</h3>
-                <p data-i18n="smartScanText">وجّه الكاميرا نحو العبوة أو القرص ليتم عرض البيانات بشكل سريع وواضح.</p>
-            </div>
-        </div>
-
-        <div class="settings-bar glass-card soft-panel">
-            <div class="setting-box">
-                <label for="language-select" data-i18n="languageLabel">اللغة</label>
-                <select id="language-select">
-                    <option value="ar">العربية</option>
-                    <option value="en">English</option>
-                </select>
-            </div>
-
-            <label class="switch setting-box">
-                <span data-i18n="voiceResultsLabel">صوت النتائج</span>
-                <input type="checkbox" id="voice-toggle" checked>
-            </label>
-        </div>
-
-        <div class="camera-section glass-card">
-            <div class="camera-topbar">
-                <span class="camera-dot"></span>
-                <span data-i18n="cameraStatusText">Medicine Scan Active</span>
-            </div>
-
+        <div class="camera-section">
             <video id="video" autoplay playsinline></video>
-            <img id="freeze-img" class="hidden" alt="Captured image">
-
-            <div class="camera-frame-corners"></div>
-            <div class="pill-hud left-pill">Pill</div>
-            <div class="pill-hud right-pill">Rx</div>
+            <button id="scan-btn" class="primary-btn">ابدأ فحص الدواء</button>
         </div>
 
-        <button id="scan-btn" class="primary-btn" data-i18n="scanBtn">فحص</button>
-
-        <div id="result-card" class="card glass-card hidden">
-            <div class="result-head">
-                <span class="result-badge" data-i18n="resultBadge">Medicine Result</span>
-                <h3 id="med-name" data-i18n="defaultMedName">اسم الدواء</h3>
-            </div>
-            <p id="med-description" data-i18n="defaultMedDescription">وصف الدواء سيظهر هنا بعد الفحص...</p>
-        </div>
-    </section>
-
-    <!-- =========================
-         لوحة الأدمن
-    ========================== -->
-    <section id="admin-dashboard" class="container hidden">
-        <div class="dashboard-header">
-            <div>
-                <p class="eyebrow" data-i18n="adminPanelEyebrow">Admin Dashboard</p>
-                <h2 data-i18n="adminDashboardTitle">إدارة الأدوية</h2>
-            </div>
-            <div class="status-chip" data-i18n="medicineDatabase">قاعدة بيانات الأدوية</div>
-        </div>
-
-        <div class="dashboard-banner glass-card">
-            <div class="banner-icon">🧪</div>
-            <div>
-                <h3 data-i18n="adminBannerTitle">إدارة بيانات النظام</h3>
-                <p data-i18n="adminBannerText">أضف الأدوية، عدّل بياناتها، واحتفظ بواجهة منظمة تناسب مشروع MedLens.</p>
-            </div>
-        </div>
-
-        <div class="table-container glass-card">
-            <table id="meds-table">
-                <thead>
-                    <tr>
-                        <th data-i18n="tableName">الاسم</th>
-                        <th data-i18n="tableDescription">الوصف</th>
-                        <th data-i18n="tableActions">خيارات</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-
-        <div class="add-form glass-card">
-            <h4 data-i18n="addMedicineTitle">إضافة دواء جديد</h4>
-
-            <input
-                type="text"
-                id="add-name-ar"
-                data-i18n-placeholder="addNameArPlaceholder"
-                placeholder="الاسم (Ar)"
-            >
-
-            <input
-                type="text"
-                id="add-name-en"
-                data-i18n-placeholder="addNameEnPlaceholder"
-                placeholder="الاسم (En)"
-            >
-
-            <textarea
-                id="add-desc-ar"
-                data-i18n-placeholder="addDescArPlaceholder"
-                placeholder="الوصف (Ar)"
-            ></textarea>
-
-            <textarea
-                id="add-desc-en"
-                data-i18n-placeholder="addDescEnPlaceholder"
-                placeholder="الوصف (En)"
-            ></textarea>
-
-            <button id="add-med-btn" class="primary-btn" data-i18n="addMedicineBtn">إضافة إلى النظام</button>
-        </div>
-    </section>
-
-    <!-- ربط الجافاسكربت -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
-</html>
+        <div id="result-card" class="card hidden" style="margin-top: 20px; padding: 15px; background:
