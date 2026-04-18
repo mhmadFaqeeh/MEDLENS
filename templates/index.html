@@ -1,91 +1,33 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="main-html">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MedLens Pro | نظام الفحص الذكي</title>
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedLens AI</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-
     <div class="background-layer"></div>
-    <div class="grid-layer"></div>
 
-    <section id="auth-section" class="container">
-        <div class="glass-icon">
-            <div class="logo-text">ML</div>
-        </div>
-        <h1 class="main-title">MedLens</h1>
-        <p class="subtitle">نظام التعرف الذكي على الأدوية</p>
-
-        <form id="login-form" class="glass-form">
-            <div class="input-wrapper">
-                <input type="text" id="username" placeholder="اسم المستخدم" required>
-            </div>
-            <div class="input-wrapper">
-                <input type="password" id="password" placeholder="كلمة المرور" required>
-            </div>
-            <button type="submit" class="primary-btn">تسجيل الدخول</button>
+    <div class="glass-container" id="auth-section">
+        <h1 id="title">MedLens AI</h1>
+        <p id="subtitle">نظام التعرف الذكي</p>
+        <button class="apple-btn" onclick="toggleLang()">English / العربية</button>
+        <form id="login-form">
+            <input type="text" id="user" placeholder="اسم المستخدم">
+            <button type="submit" class="apple-btn">دخول</button>
         </form>
-        
-        <div class="auth-footer">
-            <p>ليس لديك حساب؟ <a href="#" id="go-to-register">إنشاء حساب جديد</a></p>
+    </div>
+
+    <div class="glass-container hidden" id="dashboard">
+        <video id="video" autoplay playsinline></video>
+        <button class="apple-btn" id="capture">فحص الدواء</button>
+        <div id="result-box" class="hidden" style="margin-top:20px;">
+            <h3 id="res-name"></h3>
+            <button class="apple-btn" onclick="speakText()">🔊 استماع</button>
         </div>
-    </section>
+    </div>
 
-    <section id="user-dashboard" class="container hidden">
-        <header class="dash-header">
-            <div class="user-info">
-                <span class="status-dot"></span>
-                <h3>لوحة الفحص</h3>
-            </div>
-            <select id="lang-toggle" class="glass-select">
-                <option value="ar">العربية</option>
-                <option value="en">English</option>
-            </select>
-        </header>
-
-        <div class="camera-container">
-            <video id="video" autoplay playsinline></video>
-            <div class="scan-overlay"></div>
-        </div>
-
-        <button id="scan-btn" class="primary-btn scan-effect">ابدأ الفحص الذكي</button>
-
-        <div id="result-card" class="result-glass-card hidden">
-            <div class="result-header">
-                <span id="med-name-display">جاري التحليل...</span>
-            </div>
-            <p id="med-info-display">سيتم عرض تفاصيل الدواء والجرعات هنا بعد اكتمال المسح.</p>
-        </div>
-    </section>
-
-    <section id="admin-dashboard" class="container hidden">
-        <div class="dash-header">
-            <h2>إدارة البيانات</h2>
-            <button class="small-btn" id="back-to-user">رجوع</button>
-        </div>
-        
-        <div class="admin-tools">
-            <button class="glass-btn-secondary">إضافة دواء جديد +</button>
-        </div>
-
-        <div class="table-scroll">
-            <table class="glass-table">
-                <thead>
-                    <tr>
-                        <th>الدواء</th>
-                        <th>الحالة</th>
-                        <th>تعديل</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-meds-list">
-                    </tbody>
-            </table>
-        </div>
-    </section>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="/static/script.js"></script>
 </body>
 </html>
