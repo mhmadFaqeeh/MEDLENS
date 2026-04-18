@@ -1,8 +1,6 @@
 Flask
 gunicorn
 mysql-connector-python
-pytesseract
 opencv-python-headless
 numpy
 gTTS
-easyocr
