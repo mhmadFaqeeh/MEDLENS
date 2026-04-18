@@ -1,48 +1,33 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const authSection = document.getElementById('auth-section');
-    const userDashboard = document.getElementById('user-dashboard');
-    const loginForm = document.getElementById('login-form');
-    const video = document.getElementById('video');
-    const scanBtn = document.getElementById('scan-btn');
+let currentLang = 'ar';
 
-    // 1. التبديل بين الشاشات (تسجيل الدخول)
-    if (loginForm) {
-        loginForm.onsubmit = (e) => {
-            e.preventDefault();
-            authSection.classList.add('hidden');
-            userDashboard.classList.remove('hidden');
-            startCamera();
-        };
-    }
+function toggleLang() {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    document.getElementById('main-html').dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    // تغيير النصوص برمجياً هنا
+}
 
-    // 2. تشغيل الكاميرا
-    async function startCamera() {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: "environment" } 
-            });
-            video.srcObject = stream;
-        } catch (err) {
-            alert("يرجى السماح بالوصول للكاميرا للفحص الذكي");
-        }
-    }
+document.getElementById('login-form').onsubmit = (e) => {
+    e.preventDefault();
+    document.getElementById('auth-section').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    startCamera();
+};
 
-    // 3. التحكم في لغة الواجهة
-    const langSelect = document.getElementById('language-select');
-    if (langSelect) {
-        langSelect.onchange = () => {
-            document.body.dir = langSelect.value === 'ar' ? 'rtl' : 'ltr';
-        };
-    }
+async function startCamera() {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    document.getElementById('video').srcObject = stream;
+}
 
-    // 4. معالجة زر الفحص
-    if (scanBtn) {
-        scanBtn.onclick = () => {
-            scanBtn.innerText = "جاري التحليل...";
-            setTimeout(() => {
-                scanBtn.innerText = "فحص";
-                document.getElementById('result-card').classList.remove('hidden');
-            }, 1200);
-        };
-    }
-});
+document.getElementById('capture').onclick = async () => {
+    // منطق إرسال الصورة للسيرفر (Blob)
+    // بعد استلام النتيجة:
+    document.getElementById('result-box').classList.remove('hidden');
+    document.getElementById('res-name').innerText = "جاري التحليل...";
+};
+
+function speakText() {
+    let msg = document.getElementById('res-name').innerText;
+    let speech = new SpeechSynthesisUtterance(msg);
+    speech.lang = currentLang === 'ar' ? 'ar-SA' : 'en-US';
+    window.speechSynthesis.speak(speech);
+}
