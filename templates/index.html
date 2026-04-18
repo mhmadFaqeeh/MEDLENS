@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>MedLens — نظام فحص الأدوية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=SF+Pro+Display:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- خلفية الموقع -->
+    <div class="bg-image"></div>
+    <div class="bg-overlay"></div>
+    <div class="bg-blur-orb orb-1"></div>
+    <div class="bg-blur-orb orb-2"></div>
+    <div class="bg-blur-orb orb-3"></div>
+    <div class="noise-layer"></div>
+
+    <!-- ========== صفحة تسجيل الدخول ========== -->
+    <section id="auth-section" class="page">
+        <div class="auth-wrapper">
+
+            <!-- Logo -->
+            <div class="brand-header">
+                <div class="brand-logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="18" stroke="url(#lg1)" stroke-width="2"/>
+                            <path d="M20 10 C14 10 10 14 10 20 C10 26 14 30 20 30 C26 30 30 26 30 20" stroke="url(#lg1)" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="20" cy="20" r="5" fill="url(#lg1)"/>
+                            <defs>
+                                <linearGradient id="lg1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#2dd4bf"/>
+                                    <stop offset="1" stop-color="#67e8f9"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="brand-name">MedLens</span>
+                </div>
+                <p class="brand-tagline" data-i18n="heroEyebrow">Perceptive Medicine Recognition</p>
+            </div>
+
+            <!-- Auth Card -->
+            <div class="glass-card auth-card">
+                <!-- Tabs -->
+                <div class="tab-bar">
+                    <button class="tab-btn active" data-target="login-panel" data-i18n="loginTab">تسجيل الدخول</button>
+                    <button class="tab-btn" data-target="register-panel" data-i18n="registerTab">إنشاء حساب</button>
+                    <div class="tab-indicator"></div>
+                </div>
+
+                <!-- Login -->
+                <div id="login-panel" class="auth-panel active-panel">
+                    <h2 data-i18n="loginWelcome">مرحباً بك</h2>
+                    <p class="subtitle" data-i18n="loginSubtitle">ادخل للبدء بفحص الأدوية</p>
+
+                    <form id="login-form">
+                        <div class="field-group">
+                            <label data-i18n="usernameLabel">اسم المستخدم</label>
+                            <div class="input-wrap">
+                                <svg class="field-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 17c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <input type="text" id="username" data-i18n-placeholder="usernamePlaceholder" placeholder="أدخل اسم المستخدم" autocomplete="username" required>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label data-i18n="passwordLabel">كلمة المرور</label>
+                            <div class="input-wrap">
+                                <svg class="field-icon" viewBox="0 0 20 20" fill="none"><rect x="4" y="9" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 9V7a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <input type="password" id="password" data-i18n-placeholder="passwordPlaceholder" placeholder="أدخل كلمة المرور" autocomplete="current-password" required>
+                                <button type="button" class="eye-btn toggle-password-btn" data-target-input="password">
+                                    <svg class="eye-show" viewBox="0 0 20 20" fill="none"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6Z" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2" stroke="currentColor" stroke-width="1.5"/></svg>
+                                    <svg class="eye-hide hidden" viewBox="0 0 20 20" fill="none"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6Z" stroke="currentColor" stroke-width="1.5"/><line x1="4" y1="4" x2="16" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="primary-btn" data-i18n="loginBtn">دخول</button>
+                    </form>
+
+                    <p class="switch-text">
+                        <span data-i18n="noAccountText">ليس لديك حساب؟</span>
+                        <a href="#" id="show-register-link" data-i18n="createNewAccountLink">إنشاء حساب</a>
+                    </p>
+                </div>
+
+                <!-- Register -->
+                <div id="register-panel" class="auth-panel">
+                    <h2 data-i18n="registerTitle">إنشاء حساب</h2>
+                    <p class="subtitle" data-i18n="registerSubtitle">أنشئ حسابك للوصول للنظام</p>
+
+                    <form id="register-form">
+                        <div class="field-group">
+                            <label data-i18n="newUsernameLabel">اسم المستخدم</label>
+                            <div class="input-wrap">
+                                <svg class="field-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 17c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <input type="text" id="register-username" placeholder="اسم المستخدم" required>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label data-i18n="newPasswordLabel">كلمة المرور</label>
+                            <div class="input-wrap">
+                                <svg class="field-icon" viewBox="0 0 20 20" fill="none"><rect x="4" y="9" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 9V7a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <input type="password" id="register-password" placeholder="كلمة المرور" required>
+                                <button type="button" class="eye-btn toggle-password-btn" data-target-input="register-password">
+                                    <svg class="eye-show" viewBox="0 0 20 20" fill="none"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6Z" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2" stroke="currentColor" stroke-width="1.5"/></svg>
+                                    <svg class="eye-hide hidden" viewBox="0 0 20 20" fill="none"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6Z" stroke="currentColor" stroke-width="1.5"/><line x1="4" y1="4" x2="16" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label data-i18n="confirmPasswordLabel">تأكيد كلمة المرور</label>
+                            <div class="input-wrap">
+                                <svg class="field-icon" viewBox="0 0 20 20" fill="none"><rect x="4" y="9" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 9V7a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <input type="password" id="register-confirm-password" placeholder="تأكيد كلمة المرور" required>
+                                <button type="button" class="eye-btn toggle-password-btn" data-target-input="register-confirm-password">
+                                    <svg class="eye-show" viewBox="0 0 20 20" fill="none"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6Z" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2" stroke="currentColor" stroke-width="1.5"/></svg>
+                                    <svg class="eye-hide hidden" viewBox="0 0 20 20" fill="none"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6Z" stroke="currentColor" stroke-width="1.5"/><line x1="4" y1="4" x2="16" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="primary-btn" data-i18n="registerBtn">إنشاء الحساب</button>
+                    </form>
+
+                    <p class="switch-text">
+                        <span data-i18n="haveAccountText">لديك حساب؟</span>
+                        <a href="#" id="show-login-link" data-i18n="backToLoginLink">تسجيل الدخول</a>
+                    </p>
+                </div>
+
+                <div id="auth-message" class="auth-message hidden"></div>
+            </div>
+
+            <!-- Features -->
+            <div class="features-row">
+                <div class="feature-pill">
+                    <span class="feat-emoji">💊</span>
+                    <span data-i18n="featureScanTitle">فحص الدواء</span>
+                </div>
+                <div class="feature-pill">
+                    <span class="feat-emoji">🧾</span>
+                    <span data-i18n="featureResultTitle">نتائج واضحة</span>
+                </div>
+                <div class="feature-pill">
+                    <span class="feat-emoji">🔊</span>
+                    <span data-i18n="featureVoiceTitle">دعم صوتي</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== لوحة المستخدم ========== -->
+    <section id="user-dashboard" class="page hidden">
+
+        <!-- Top Bar -->
+        <div class="topbar glass-card">
+            <div class="topbar-brand">
+                <div class="logo-icon small">
+                    <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="url(#lg2)" stroke-width="2"/><circle cx="20" cy="20" r="5" fill="url(#lg2)"/><defs><linearGradient id="lg2" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#2dd4bf"/><stop offset="1" stop-color="#67e8f9"/></linearGradient></defs></svg>
+                </div>
+                <span>MedLens</span>
+            </div>
+            <div class="topbar-controls">
+                <select id="language-select" class="lang-select glass-select">
+                    <option value="ar">🌐 العربية</option>
+                    <option value="en">🌐 English</option>
+                </select>
+                <label class="voice-toggle-wrap" title="صوت النتائج">
+                    <svg viewBox="0 0 20 20" fill="none"><path d="M9 5L5 9H2v2h3l4 4V5Z" fill="currentColor"/><path d="M14 7c1.1.9 1.8 2.3 1.8 3.8S15.1 13.9 14 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    <input type="checkbox" id="voice-toggle" checked>
+                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+                <button class="logout-btn" id="logout-btn" title="خروج">
+                    <svg viewBox="0 0 20 20" fill="none"><path d="M13 3h4v14h-4M8 7l4 3-4 3M3 10h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="dashboard-body">
+            <!-- Camera Card -->
+            <div class="glass-card camera-card">
+                <div class="camera-header">
+                    <div class="live-dot-wrap">
+                        <span class="live-dot"></span>
+                        <span data-i18n="cameraStatusText">Medicine Scan Active</span>
+                    </div>
+                    <div class="scan-frame-label">📷</div>
+                </div>
+
+                <div class="camera-viewport">
+                    <video id="video" autoplay playsinline></video>
+                    <img id="freeze-img" class="hidden" alt="Captured">
+                    <div class="scan-corners">
+                        <span class="corner tl"></span>
+                        <span class="corner tr"></span>
+                        <span class="corner bl"></span>
+                        <span class="corner br"></span>
+                    </div>
+                    <div class="scan-line"></div>
+                </div>
+
+                <button id="scan-btn" class="scan-btn primary-btn" data-i18n="scanBtn">
+                    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
+                    <span>فحص</span>
+                </button>
+            </div>
+
+            <!-- Result Card -->
+            <div id="result-card" class="glass-card result-card hidden">
+                <div class="result-header">
+                    <div class="result-badge">
+                        <span>✓</span>
+                        <span data-i18n="resultBadge">نتيجة الفحص</span>
+                    </div>
+                    <button class="close-result-btn" id="close-result-btn">✕</button>
+                </div>
+
+                <h3 id="med-name" class="med-name">—</h3>
+
+                <div class="result-grid">
+                    <div class="result-item" id="res-category">
+                        <span class="res-label">📂 <span data-i18n="categoryLabel">الفئة</span></span>
+                        <span class="res-value" id="val-category">—</span>
+                    </div>
+                    <div class="result-item" id="res-form">
+                        <span class="res-label">💊 <span data-i18n="formLabel">الشكل</span></span>
+                        <span class="res-value" id="val-form">—</span>
+                    </div>
+                    <div class="result-item full" id="res-ingredient">
+                        <span class="res-label">🧪 <span data-i18n="ingredientLabel">المادة الفعالة</span></span>
+                        <span class="res-value" id="val-ingredient">—</span>
+                    </div>
+                    <div class="result-item full" id="res-indications">
+                        <span class="res-label">✅ <span data-i18n="indicationsLabel">الاستخدامات</span></span>
+                        <span class="res-value" id="val-indications">—</span>
+                    </div>
+                    <div class="result-item full" id="res-sideeffects">
+                        <span class="res-label">⚠️ <span data-i18n="sideEffectsLabel">الأعراض الجانبية</span></span>
+                        <span class="res-value" id="val-sideeffects">—</span>
+                    </div>
+                    <div class="result-item full" id="res-contra">
+                        <span class="res-label">🚫 <span data-i18n="contraLabel">موانع الاستخدام</span></span>
+                        <span class="res-value" id="val-contra">—</span>
+                    </div>
+                    <div class="result-item full" id="res-alternatives">
+                        <span class="res-label">🔄 <span data-i18n="alternativesLabel">البدائل</span></span>
+                        <span class="res-value" id="val-alternatives">—</span>
+                    </div>
+                    <div class="result-item full" id="res-storage">
+                        <span class="res-label">📦 <span data-i18n="storageLabel">التخزين</span></span>
+                        <span class="res-value" id="val-storage">—</span>
+                    </div>
+                </div>
+
+                <button class="voice-read-btn" id="voice-read-btn">
+                    <svg viewBox="0 0 20 20" fill="none"><path d="M9 5L5 9H2v2h3l4 4V5Z" fill="currentColor"/><path d="M14 7c1.1.9 1.8 2.3 1.8 3.8S15.1 13.9 14 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    <span data-i18n="readAloudBtn">قراءة النتيجة</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== لوحة الأدمن ========== -->
+    <section id="admin-dashboard" class="page hidden">
+
+        <div class="topbar glass-card">
+            <div class="topbar-brand">
+                <div class="logo-icon small">
+                    <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="url(#lg3)" stroke-width="2"/><circle cx="20" cy="20" r="5" fill="url(#lg3)"/><defs><linearGradient id="lg3" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#2dd4bf"/><stop offset="1" stop-color="#67e8f9"/></linearGradient></defs></svg>
+                </div>
+                <span>MedLens Admin</span>
+            </div>
+            <div class="topbar-controls">
+                <select id="admin-language-select" class="lang-select glass-select">
+                    <option value="ar">🌐 العربية</option>
+                    <option value="en">🌐 English</option>
+                </select>
+                <button class="logout-btn" id="admin-logout-btn" title="خروج">
+                    <svg viewBox="0 0 20 20" fill="none"><path d="M13 3h4v14h-4M8 7l4 3-4 3M3 10h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="admin-body">
+            <div class="glass-card admin-card">
+                <div class="admin-header">
+                    <div>
+                        <h2 data-i18n="adminDashboardTitle">إدارة الأدوية</h2>
+                        <p class="subtitle" data-i18n="adminBannerText">أضف وعدّل بيانات الأدوية</p>
+                    </div>
+                    <div class="status-pill">🧪 <span data-i18n="medicineDatabase">قاعدة البيانات</span></div>
+                </div>
+
+                <div class="table-wrap">
+                    <table id="meds-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="tableName">الاسم</th>
+                                <th data-i18n="tableDescription">الوصف</th>
+                                <th data-i18n="tableActions">خيارات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="add-form">
+                    <h4 data-i18n="addMedicineTitle">إضافة دواء جديد</h4>
+                    <div class="form-grid">
+                        <div class="input-wrap">
+                            <input type="text" id="add-name-ar" placeholder="الاسم (عربي)">
+                        </div>
+                        <div class="input-wrap">
+                            <input type="text" id="add-name-en" placeholder="الاسم (English)">
+                        </div>
+                        <div class="input-wrap full">
+                            <textarea id="add-desc-ar" placeholder="الوصف (عربي)" rows="2"></textarea>
+                        </div>
+                        <div class="input-wrap full">
+                            <textarea id="add-desc-en" placeholder="Description (English)" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <button id="add-med-btn" class="primary-btn" data-i18n="addMedicineBtn">إضافة إلى النظام</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
